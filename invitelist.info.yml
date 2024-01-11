@@ -1,0 +1,10 @@
+name: Invitation List
+description: Invite users for Events and provides a contact list for admins.
+package: Practice
+type: module
+dependencies:
+  - block
+
+core: 8.x
+core_version_requirement: ^8 || ^9
+configure: invitelist.admin_settings

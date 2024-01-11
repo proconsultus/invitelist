@@ -1,0 +1,62 @@
+<?php
+/**
+ * @file
+ * Invite Module hooks.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alter the node add/edit form to include admin setting for displaying InviteBlock with content.
+ */
+function invitelist_form_node_form_alter(&$wform, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
+{
+  $node = $form_state->getFormObject()->getEntity();
+  $current_node_type = $node->getType();
+  $config = \Drupal::config('invitelist.settings');
+  $types = $config->get('allowed_types', array());
+  // INVITE Options for administrators
+  if (in_array($current_node_type, $types)) {
+    $form['invitelist'] = [
+      '#type' => 'details',
+      '#title' => t('Invite Collection'),
+      '#access' => \Drupal::currentUser()->hasPermission('administer invitelist'),
+      '#group' => 'advanced',
+      '#weight' => 100,
+    ];
+    /** @var \Drupal\invitelist\EnablerService $enabler */
+    $enabler = \Drupal::service('invitelist.enabler');
+    $form['invitelist']['invitelist_enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Collect INVITE e-mail addresses for this node.'),
+      '#default_value' => $enabler->isEnabled($node),
+    ];
+    foreach (array_keys($form['actions']) as $action) {
+      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+        $form['actions'][$action]['#submit'][] = 'invitelist_form_node_form_submit';
+      }
+    }
+  }
+}
+
+/**
+ * Form submission handler for INVITE item field on the node form.
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @see invitelist_form_node_form_alter()
+ *
+ */
+function invitelist_form_node_form_submit(array $form, FormStateInterface $form_state)
+{
+  /** @var \Drupal\invitelist\EnablerService $enabler */
+  $enabler = \Drupal::service('invitelist.enabler');
+  $node = $form_state->getFormObject()->getEntity();
+  if ($enabled = $form_state->getValue('invitelist_enabled')) {
+    $enabler->setEnabled($node);
+  } else {
+    $enabler->delEnabled($node);
+  }
+}

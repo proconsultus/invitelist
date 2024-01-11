@@ -1,0 +1,21 @@
+invitelist.form:
+  path: '/invitelist'
+  defaults:
+    _form: '\Drupal\invitelist\Form\INVITEForm'
+    _title: 'Accept Invite to this Event'
+  requirements:
+    _permission: 'view invitelist'
+invitelist.admin_settings:
+  path: '/admin/config/content/invitelist'
+  defaults:
+    _form: '\Drupal\invitelist\Form\INVITESettingsForm'
+    _title: 'Invite List Settings'
+  requirements:
+    _permission: 'administer invitelist'
+invitelist.report:
+  path: '/admin/reports/invitelist'
+  defaults:
+    _controller: '\Drupal\invitelist\Controller\ReportController::report'
+    _title: 'List of Invitees'
+  requirements:
+    _permission: 'view invitelist

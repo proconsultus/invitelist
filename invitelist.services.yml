@@ -1,0 +1,4 @@
+services:
+  invitelist.enabler:
+    class: Drupal\invitelist\EnablerService
+    arguments: [ ]

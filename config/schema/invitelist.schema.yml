@@ -1,0 +1,13 @@
+# Schema for the configuration file of invitelist module.
+
+invitelist.settings:
+  type: config_object
+  label: 'Invite List Content Type Settings'
+  mapping:
+    allowed_types:
+      type: sequence
+      label: 'Content types Invite Form can be display on'
+      sequence:
+        type: string
+        label: 'Content type'
+     

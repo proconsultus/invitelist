@@ -1,0 +1,11 @@
+view invitelist:
+  title: 'View Invitation Form'
+  description: 'View and submit the Invitation form.'
+access invitelist report:
+  title: 'Access List of Invitees'
+  description: 'View the report listing all Invitees submitted.'
+administer invitelist:
+  title: 'Administer Invite Settings'
+  description: 'Access the INVITE administrative settings page.'
+  restrict access: true
+
